@@ -115,7 +115,7 @@ const updatePassword = async (req, res) => {
   const userTobeConfirmed = await User.findOne({ token });
 
   if (!userTobeConfirmed) {
-    const error = new Error(`Token not valid`);
+    const error = new Error(`User not found`);
     return res.status(404).json({ msg: error.message });
   }
 
@@ -131,6 +131,10 @@ const updatePassword = async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 };
+
+const profile = async (req, res) => {
+  res.json(req.user);
+}
 export {
   registerUser,
   authenticate,
@@ -138,4 +142,5 @@ export {
   recoverPassword,
   checkTokenToRecoverPassword,
   updatePassword,
+  profile
 };
