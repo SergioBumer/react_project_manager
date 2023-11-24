@@ -5,6 +5,7 @@ import connectMongoose from "./config/db.js";
 // Routing imports
 
 import userRoutes from "./routes/userRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 // Routing
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/projects", projectRoutes);
 
 app.listen(PORT, () => {
   console.log("App is running succesfully");
