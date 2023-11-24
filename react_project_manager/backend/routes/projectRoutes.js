@@ -15,7 +15,7 @@ projectRoutes
   .put(checkAuth, projectController.updateProject)
   .delete(checkAuth, projectController.deleteProject);
 
-projectRoutes.get("/tareas/:id", checkAuth, projectController.getProjectTasks);
+projectRoutes.get("/tasks/:id", checkAuth, projectController.getProjectTasks);
 projectRoutes.post(
   "add-collabotator",
   checkAuth,

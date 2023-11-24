@@ -2,13 +2,10 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 const checkAuth = async (req, res, next) => {
   let token;
-  console.log("From middleware");
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
-    console.log("Authenticated");
-    console.log(req.headers.authorization);
 
     try {
       token = req.headers.authorization.split(" ")[1];
