@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectMongoose from "./config/db.js";
+import cors from "cors";
 
 // Routing imports
 
@@ -12,6 +13,23 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 connectMongoose();
+
+//Configure CORS whitelist
+const whitelist = ["http://localhost:5173"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(
+        new Error("CORS Error: You are not allowed to access the API. ")
+      );
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
 

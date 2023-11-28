@@ -9,8 +9,7 @@ const registerUser = async (req, res) => {
     const userToBeCreated = new User(req.body);
     userToBeCreated.token = generateID();
     await findUserByEmail(userToBeCreated.email);
-    const savedUser = await userToBeCreated.save();
-    res.status(201).json(savedUser);
+    res.status(201).json({ msg: "User account creation was successful. Check your email for account activation instructions" });
   } catch (error) {
     //console.error({ msg: error.message });
     res.status(403).json({ msg: error });
@@ -27,7 +26,7 @@ const authenticate = async (req, res) => {
   }
 
   if ((await user.confirmedEmail) === false) {
-    const error = new Error(`User with email: ${email} is not confirmed yet.`);
+    const error = new Error(`User with email: ${email} is not confirmed yet`);
     return res.status(403).json({ msg: error.message });
   }
 
@@ -56,7 +55,7 @@ const checkToken = async (req, res) => {
     userTobeConfirmed.confirmedEmail = true;
     userTobeConfirmed.token = "";
     await userTobeConfirmed.save();
-    res.json({ msg: "Token is valid. The user is now available." });
+    res.json({ msg: "Token is valid. The user is now available" });
   } catch (error) {
     console.log(error);
   }
@@ -65,7 +64,7 @@ const checkToken = async (req, res) => {
 const findUserByEmail = async (email) => {
   const existingUser = await User.findOne({ email: email });
   if (existingUser !== null) {
-    throw `User with email: ${existingUser.email} already exists.`;
+    throw `User with email: ${existingUser.email} already exists`;
   }
 
   return existingUser;
@@ -134,7 +133,7 @@ const updatePassword = async (req, res) => {
 
 const profile = async (req, res) => {
   res.json(req.user);
-}
+};
 export {
   registerUser,
   authenticate,
@@ -142,5 +141,5 @@ export {
   recoverPassword,
   checkTokenToRecoverPassword,
   updatePassword,
-  profile
+  profile,
 };
