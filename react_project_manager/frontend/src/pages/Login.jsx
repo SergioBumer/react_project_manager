@@ -45,7 +45,7 @@ const Login = () => {
         />
       </form>
 
-      <nav className="lg:flex lg:justify-between">
+      <nav className="xl:flex xl:justify-between">
         <Link
           className="block text-center my-5 text-slate-500 uppercase text-sm hover:cursor-pointer"
           to="register"
@@ -54,7 +54,7 @@ const Login = () => {
         </Link>
 
         <Link
-          className="block text-center my-5 text-slate-500 uppercase text-sm hover:cursor-pointer"
+          className="block text-center my-5 text-rose-800	 uppercase text-sm hover:cursor-pointer"
           to="forgot-password"
         >
           I forgot my password

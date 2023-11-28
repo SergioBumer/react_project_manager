@@ -36,7 +36,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/users", {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/v1/users`, {
         name,
         email,
         password,

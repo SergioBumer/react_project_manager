@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import generateID from "../helpers/generateID.js";
 import generateToken from "../helpers/generateJWT.js";
+import emailRegister from "../helpers/emails.js";
 
 // Authentication, Register and User Confirmation
 
@@ -9,7 +10,17 @@ const registerUser = async (req, res) => {
     const userToBeCreated = new User(req.body);
     userToBeCreated.token = generateID();
     await findUserByEmail(userToBeCreated.email);
-    res.status(201).json({ msg: "User account creation was successful. Check your email for account activation instructions" });
+    await userToBeCreated.save();
+    emailRegister({
+      email: userToBeCreated.email,
+      token: userToBeCreated.token,
+      name: userToBeCreated.name,
+    });
+    res
+      .status(201)
+      .json({
+        msg: "User account creation was successful. Check your email for account activation instructions",
+      });
   } catch (error) {
     //console.error({ msg: error.message });
     res.status(403).json({ msg: error });
@@ -45,7 +56,6 @@ const authenticate = async (req, res) => {
 const checkToken = async (req, res) => {
   const token = req.params.token;
   const userTobeConfirmed = await User.findOne({ token });
-
   if (!userTobeConfirmed) {
     const error = new Error(`Token not valid`);
     return res.status(404).json({ msg: error.message });
