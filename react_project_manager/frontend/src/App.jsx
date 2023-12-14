@@ -13,7 +13,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="register" index element={<Register />} />
           <Route path="forgot-password" index element={<ForgotPassword />} />
-          <Route path="new-password" index element={<NewPassword />} />
+          <Route path="new-password/:token" index element={<NewPassword />} />
           <Route
             path="confirm-account/:id"
             index

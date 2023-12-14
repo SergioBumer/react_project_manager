@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import generateID from "../helpers/generateID.js";
 import generateToken from "../helpers/generateJWT.js";
-import emailRegister from "../helpers/emails.js";
+import { emailRegister, recoverPasswordEmail } from "../helpers/emails.js";
 
 // Authentication, Register and User Confirmation
 
@@ -16,11 +16,9 @@ const registerUser = async (req, res) => {
       token: userToBeCreated.token,
       name: userToBeCreated.name,
     });
-    res
-      .status(201)
-      .json({
-        msg: "User account creation was successful. Check your email for account activation instructions",
-      });
+    res.status(201).json({
+      msg: "User account creation was successful. Check your email for account activation instructions",
+    });
   } catch (error) {
     //console.error({ msg: error.message });
     res.status(403).json({ msg: error });
@@ -92,6 +90,12 @@ const recoverPassword = async (req, res) => {
   try {
     userToRecover.token = generateID();
     await userToRecover.save();
+
+    recoverPasswordEmail({
+      email: userToRecover.email,
+      token: userToRecover.token,
+      name: userToRecover.name,
+    });
     res.json({
       msg: "We have sent you an email with the password recovery instructions.",
     });
