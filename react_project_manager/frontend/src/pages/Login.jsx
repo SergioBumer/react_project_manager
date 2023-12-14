@@ -1,13 +1,58 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Alert from "../components/Alert";
+import axios from "axios";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({});
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Entre!");
+    if ([email, password].includes("")) {
+      setAlert({
+        message: "You must provide information for all fields",
+        error: true,
+      });
+
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/v1/users/login`,
+        {
+          email,
+          password,
+        }
+      );
+      setAlert({
+        message: response.data.msg,
+        error: false,
+      });
+
+      setEmail("");
+      setPassword("");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      setAlert({
+        message: error.response.data.msg,
+        error: true,
+      });
+    }
+  };
   return (
     <>
       <h1 className="text-sky-600 font-black text-6xl">
         Log in and manage your <span className="text-slate-700">projects</span>
       </h1>
-
-      <form className="my-10 bg-white shadow rounded-lg p-10">
+      {alert.message && <Alert alert={alert} />}
+      <form
+        className="my-10 bg-white shadow rounded-lg p-10"
+        onSubmit={handleSubmit}
+      >
         <div>
           <label
             className="uppercase text-gray-600 block text-xl font-bold"
@@ -20,6 +65,8 @@ const Login = () => {
             placeholder="Email"
             id="email"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -35,6 +82,8 @@ const Login = () => {
             placeholder="Password"
             id="password"
             className="w-full mt-3 p-3 border rounded-xl bg-gray-50"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
